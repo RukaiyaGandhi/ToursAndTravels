@@ -1,0 +1,241 @@
+package book;
+
+import java.awt.Color;
+import java.awt.Font;
+import java.awt.Image;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.ResultSet;
+import java.sql.Statement;
+
+import javax.swing.ImageIcon;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+
+public class bookingSuccessful extends JFrame {
+
+	String url, user, pass, qry;
+	Connection Con;
+	Statement Stm;
+	ResultSet Rs;
+//	JLabel successLabel = new JLabel("Your Booking is Successfull");
+	JLabel fullnameLabel = new JLabel("Fullname");
+	JLabel genderLabel = new JLabel("Gender");
+	JLabel addressLabel = new JLabel("Address");
+	JLabel contactLabel = new JLabel("Contact");
+	JLabel emailLabel = new JLabel("Email");
+	JLabel idLabel = new JLabel("AadharNo.");
+	JLabel typeLabel = new JLabel("Tour Type");
+	JLabel packageLabel = new JLabel("Package");
+	JLabel monthLabel = new JLabel("Month");
+	JLabel operators = new JLabel("Operator");
+	JLabel amountLabel = new JLabel("Amount");
+	JLabel paymethodLabel = new JLabel("Payment");
+	JLabel Dname , Dgender ,
+	Daddress , Dcontact , 
+	Demail , DAdhar  , 
+	DPackageType , DPackageName , 
+	DMonth,Doprator,
+	Damount,Dpmethod ;
+	public bookingSuccessful()
+	{
+		
+		setLocationAndSize();
+		Display();
+		addComponents();
+		
+		setTitle("Booking Successful");
+		setSize(940, 600);
+		setVisible(true);
+		setLocation(200, 50);
+		setResizable(true);
+	}
+	
+	public void setLocationAndSize(){
+		
+		//Success
+//		
+//		successLabel.setBounds(50,10,120,30);
+//		successLabel.setForeground(Color.black);
+//		successLabel.setFont(new Font("Serif", Font.BOLD, 21));
+	// fullname
+		fullnameLabel.setBounds(50, 40, 100, 30);
+		fullnameLabel.setForeground(Color.black);
+		fullnameLabel.setFont(new Font("Serif", Font.BOLD, 21));
+		//Gender
+		genderLabel.setBounds(50, 80, 100, 30);
+		genderLabel.setForeground(Color.black);
+		genderLabel.setFont(new Font("Serif", Font.BOLD, 21));
+		// Address
+		addressLabel.setBounds(50,120, 100, 30);
+		addressLabel.setForeground(Color.black);
+		addressLabel.setFont(new Font("Serif", Font.BOLD, 21));
+		// Contact
+		contactLabel.setBounds(50, 160, 100, 30);
+		contactLabel.setForeground(Color.black);
+		contactLabel.setFont(new Font("Serif", Font.BOLD, 21));
+		// Email
+		emailLabel.setBounds(50, 200, 100, 30);
+		emailLabel.setForeground(Color.BLACK);
+		emailLabel.setFont(new Font("Serif", Font.BOLD,21));
+		// Id
+		idLabel.setBounds(50,240, 100, 30);
+		idLabel.setForeground(Color.black);
+		idLabel.setFont(new Font("Serif", Font.BOLD,21));
+		// Tour Type
+		typeLabel.setBounds(50,280, 100, 30);
+		typeLabel.setForeground(Color.black);
+		typeLabel.setFont(new Font("Serif", Font.BOLD, 21));
+		// Package
+		packageLabel.setBounds(50,320, 100, 30);
+		packageLabel.setForeground(Color.black);
+		packageLabel.setFont(new Font("Serif", Font.BOLD,21));
+		// Month
+		monthLabel.setBounds(50,360, 100, 30);
+		monthLabel.setForeground(Color.black);
+		monthLabel.setFont(new Font("Serif", Font.BOLD,21));
+		// Operators
+		operators.setBounds(50,400, 100, 30);
+		operators.setForeground(Color.black);
+		operators.setFont(new Font("Serif", Font.BOLD,21));
+		// Amount
+		amountLabel.setBounds(50,440, 100, 30);
+		amountLabel.setForeground(Color.black);
+		amountLabel.setFont(new Font("Serif", Font.BOLD,21));
+		// Payment
+		paymethodLabel.setBounds(50,480,100, 30);
+		paymethodLabel.setForeground(Color.black);
+		paymethodLabel.setFont(new Font("Serif", Font.BOLD,21));
+		//Name
+		Dname.setBounds(150, 40, 300, 30);
+		Dname.setForeground(Color.black);
+		Dname.setFont(new Font("Serif", Font.BOLD, 21));
+		//gender
+		Dname.setBounds(150, 80, 300, 30);
+		Dname.setForeground(Color.black);
+		Dname.setFont(new Font("Serif", Font.BOLD, 21));
+		//address
+		Daddress.setBounds(150, 120, 300, 30);
+		Daddress.setForeground(Color.black);
+		Dname.setFont(new Font("Serif", Font.BOLD, 21));
+		//contact
+		Dcontact.setBounds(150, 160, 300, 30);
+		Dcontact.setForeground(Color.black);
+		Dname.setFont(new Font("Serif", Font.BOLD, 21));
+		//email
+		Demail.setBounds(150, 200, 300, 30);
+		Demail.setForeground(Color.black);
+		Dname.setFont(new Font("Serif", Font.BOLD, 21));
+		//Adhar
+		DAdhar.setBounds(150, 240, 300, 30);
+		DAdhar.setForeground(Color.black);
+		Dname.setFont(new Font("Serif", Font.BOLD, 21));
+		//packagetype
+		DPackageType.setBounds(150, 260, 300, 30);
+		DPackageType.setForeground(Color.black);
+		Dname.setFont(new Font("Serif", Font.BOLD, 21));
+		//packagename
+		DPackageName.setBounds(150,280, 300, 30);
+		DPackageName.setForeground(Color.black);
+		Dname.setFont(new Font("Serif", Font.BOLD, 21));
+		//Month
+		DMonth.setBounds(150,320, 300, 30);
+		DMonth.setForeground(Color.black);
+		Dname.setFont(new Font("Serif", Font.BOLD, 21));
+		//operator
+		Doprator.setBounds(150,360, 300, 30);
+		Doprator.setForeground(Color.black);
+		Doprator.setFont(new Font("Serif", Font.BOLD, 21));
+		//amount
+		Damount.setBounds(150,400, 300, 30);
+		Damount.setForeground(Color.black);
+		Damount.setFont(new Font("Serif", Font.BOLD, 21));
+		//method
+		Dpmethod.setBounds(150,440, 300, 30);
+		Dpmethod.setForeground(Color.black);
+		Dpmethod.setFont(new Font("Serif", Font.BOLD, 21));
+	}
+	
+	public void addComponents(){
+		
+//		add(successLabel);   
+
+		
+		
+		add(fullnameLabel);
+		add(Dname );
+		
+		add(genderLabel);
+		add(Dgender);
+		
+		add(addressLabel);
+		add(Daddress);
+		
+		add(contactLabel);
+		add(Dcontact);
+		
+		add(emailLabel);
+		add(Demail);
+		
+		add(idLabel);
+		add(DAdhar);
+		
+		add(typeLabel);
+		add(DPackageType);
+		
+		add(packageLabel);
+		add(DPackageName);
+		
+		add(monthLabel);
+		add(DMonth);
+		
+		add(operators);
+		add(Doprator);
+		
+		add(amountLabel);
+		add(Damount);
+		
+		add(paymethodLabel);
+		add(Dpmethod);
+	}
+  public void Display()
+  {
+	  url = "jdbc:mysql://localhost:3306/A_R_TRAVELS";
+		user = "root";
+		pass = "";
+		try{
+		Class.forName("com.mysql.jdbc.Driver");
+		System.out.println("Class Loaded book");
+		Con = DriverManager.getConnection(url, user, pass);
+		System.out.println("Conection Established book");
+//		qry="SELECT"
+//				+ " (Fullname, Gender,Address,Contact, Adharno,"
+//				+ " TourType_ID,Package_ID, Month_ID, Operator_ID,"
+//				+ " Payment_Amount, Payment_Method )from tbl_details order by details_ID DESC limit 1;";
+//		Stm = Con.createStatement();
+//		
+//		Rs=Stm.executeQuery(qry);
+//		System.out.println("QRY"+Rs.next());
+//		while(Rs.next())
+//		{
+//			Dname=new JLabel(Rs.getString(1));
+//			Dgender=new JLabel(Rs.getString(2));
+//			Daddress = new JLabel(Rs.getString(3));
+//			Dcontact = new JLabel(Rs.getString(4));
+//			DAdhar = new JLabel(Rs.getString(5));
+//			DPackageType = new JLabel(Rs.getString(6));
+//			Damount = new JLabel(Rs.getString(12));
+//			Dpmethod = new JLabel(Rs.getString(13));
+//		}
+//		qry = "Select from tbl_packages";
+		}
+		catch(Exception e)
+		{
+			System.out.println(e);
+			
+			
+		}
+		
+		
+  }
+}

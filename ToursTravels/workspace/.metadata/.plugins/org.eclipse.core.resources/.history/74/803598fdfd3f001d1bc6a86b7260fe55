@@ -1,0 +1,159 @@
+package login;
+
+import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.ResultSet;
+import java.sql.Statement;
+
+import javax.swing.*;
+
+import AR_travels.home;
+import book.bookingDetail;
+import book.bookingSuccessful;
+import book.customerDetail;
+
+class loginFrame extends JFrame implements ActionListener {
+
+	ImageIcon i1 = new ImageIcon(ClassLoader.getSystemResource("buttonIcon/bg.jpg"));
+	Image i2 = i1.getImage().getScaledInstance(940, 600, Image.SCALE_DEFAULT);
+	ImageIcon i3 = new ImageIcon(i2);
+	JLabel icon = new JLabel(i3);
+
+	JLabel userLabel = new JLabel("USERNAME");
+	JLabel passwordLabel = new JLabel("PASSWORD");
+	JTextField userTextField = new JTextField("aisha");
+	JPasswordField passwordField = new JPasswordField("12345");
+	JButton loginButton = new JButton("LOGIN");
+	JButton resetButton = new JButton("RESET");
+	JCheckBox showPassword = new JCheckBox("Show Password");
+
+	loginFrame() 
+	{
+
+		setLayoutManager();
+		setLocationAndSize();
+		addComponentsToContainer();
+		addActionEvent();
+
+		setVisible(true);
+		setSize(940, 600);
+		add(icon);
+		setLocation(200, 50);
+		setResizable(false);
+		setTitle("Login");
+
+	}
+
+	public void setLayoutManager() {
+		setLayout(null);
+	}
+
+	public void setLocationAndSize() {
+		userLabel.setBounds(320, 150, 100, 30);
+		passwordLabel.setBounds(320, 220, 100, 30);
+		userTextField.setBounds(410, 150, 170, 30);
+		passwordField.setBounds(410, 220, 170, 30);
+		showPassword.setBounds(410, 250, 150, 30);
+		loginButton.setBounds(320, 300, 100, 30);
+		resetButton.setBounds(480, 300, 100, 30);
+	}
+
+	public void addComponentsToContainer() {
+		add(userLabel);
+		add(passwordLabel);
+		add(userTextField);
+		add(passwordField);
+		add(showPassword);
+		add(loginButton);
+		add(resetButton);
+	}
+
+	public void addActionEvent() {
+		loginButton.addActionListener(this);
+		resetButton.addActionListener(this);
+		showPassword.addActionListener(this);
+	}
+
+	/* (non-Javadoc)
+	 * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
+	 */
+	@Override
+	public void actionPerformed(ActionEvent e) {
+		// LOGIN button
+		String username;
+		String password;
+
+		username = userTextField.getText();
+		password = passwordField.getText();
+		// if (e.getSource() == loginButton) {
+		// }
+		// RESET button
+		if (e.getSource() == resetButton) {
+			userTextField.setText("");
+			passwordField.setText("");
+
+		}
+		// SHOWPASSWORD cheakbox
+		if (e.getSource() == showPassword) {
+			if (showPassword.isSelected()) {
+				passwordField.setEchoChar((char) 0);
+			} else {
+				passwordField.setEchoChar('*');
+			}
+		}
+		if (e.getSource() == loginButton) {
+			// name is true than will close the form
+			String url, user, pass, qry;
+			url = "jdbc:mysql://localhost:3306/A_R_TRAVELS";
+			user = "root";
+			pass = "";
+			Connection Con;
+			Statement Stm;
+			ResultSet Rs;
+			
+
+			try {
+				Class.forName("com.mysql.jdbc.Driver");
+				System.out.println("Class Loaded");
+
+				Con = DriverManager.getConnection(url, user, pass);
+				System.out.println("Conection Established");
+				Stm = Con.createStatement();
+				qry = "Select * from tbl_userlogin Where User_Name='" + username + "' and password='" + password + "';";
+				Rs = Stm.executeQuery(qry);
+				if (Rs.next()) 
+				{
+//					new home();
+					dispose();
+					Con.close();
+					new bookingDetail();
+				}
+				else {
+					JOptionPane.showMessageDialog(this, "username password is wrong");
+				}
+			} catch (Exception e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			}
+
+		} 
+	}
+}
+
+public class login {
+
+	public static void main(String[] args) {
+
+		loginFrame frame = new loginFrame();
+
+		frame.setTitle("Login");
+		frame.setSize(940, 600);
+		frame.setVisible(true);
+		frame.setLocation(200, 50);
+		frame.setResizable(false);
+	}
+
+}

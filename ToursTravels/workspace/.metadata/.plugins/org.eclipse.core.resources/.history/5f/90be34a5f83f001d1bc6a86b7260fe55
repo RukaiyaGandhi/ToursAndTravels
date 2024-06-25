@@ -1,0 +1,335 @@
+package book;
+
+import java.awt.Choice;
+import java.awt.Color;
+import java.awt.Font;
+import java.awt.Image;
+import java.awt.ItemSelectable;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.ItemEvent;
+import java.awt.event.ItemListener;
+import java.nio.channels.NetworkChannel;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
+
+import javax.swing.ImageIcon;
+import javax.swing.JButton;
+import javax.swing.JComboBox;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JTextField;
+
+public class bookingDetail extends JFrame {
+	Connection conn;
+	Statement stm;
+	ResultSet rs;
+	String url, user, password, load, Sql;
+	ImageIcon i1 = new ImageIcon(ClassLoader.getSystemResource("buttonIcon/bg.jpg"));
+	Image i2 = i1.getImage().getScaledInstance(940, 600, Image.SCALE_DEFAULT);
+	ImageIcon i3 = new ImageIcon(i2);
+	JLabel icon = new JLabel(i3);
+
+	JLabel typeLabel = new JLabel("Tour Type");
+	Choice typeCombo = new Choice();
+
+	JLabel packageLabel = new JLabel("Package");
+	Choice packageCombo = new Choice();
+
+	JLabel monthLabel = new JLabel("Month");
+	Choice monthCombo = new Choice();
+
+	JLabel operators = new JLabel("Operator");
+	Choice operatosChoice = new Choice();
+
+	JLabel amountLabel = new JLabel("Amount");
+	JTextField amountTextField = new JTextField();
+
+	JLabel paymethodLabel = new JLabel("Payment");
+	JTextField paymethodTextField = new JTextField("Cash");
+	
+	JLabel Customerlabel = new JLabel("Customer");
+	Choice customerchoice = new Choice();
+	
+	JButton book = new JButton("BOOK");
+	JButton newCustomer = new JButton("ADD CUSTOMER");
+
+
+	
+
+	public bookingDetail() {
+		load = "com.mysql.jdbc.Driver";
+
+		url = "jdbc:mysql://localhost:3306/A_R_TRAVELS";
+		user = "root";
+		password = "";
+
+		try {
+			Class.forName(load);
+			// System.out.print("Done");
+
+			conn = DriverManager.getConnection(url, user, password);
+			 System.out.println("Done");
+			Sql="Select Name from tbl_customers order by Custmers_ID asc;";
+			stm = conn.createStatement();
+			rs = stm.executeQuery(Sql);
+			while (rs.next())
+			{
+				customerchoice.add(rs.getString(1));
+			}
+		
+			Sql = "SELECT TourType_Name FROM tbl_tourtype ORDER by TourType_ID ASC;";
+//			stm = conn.createStatement();
+			rs = stm.executeQuery(Sql);
+			while (rs.next()) {
+				typeCombo.add(rs.getString(1));
+			}
+			Sql = "SELECT Destination FROM tbl_packages ORDER BY Package_ID ASC";
+			rs = stm.executeQuery(Sql);
+			while (rs.next()) {
+				packageCombo.add(rs.getString(1));
+			}
+			Sql = "SELECT Month_Name FROM tbl_month ORDER BY Month_ID ASC";
+			rs = stm.executeQuery(Sql);
+			while (rs.next()) {
+				monthCombo.add(rs.getString(1));
+			}
+			 Sql="Select Operator_Name from tbl_operator order by Operator_ID asc";
+			 rs = stm.executeQuery(Sql);
+				while (rs.next()) {
+					operatosChoice.add(rs.getString(1));
+				}
+			// conn.close();
+			stm.close();
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
+		setLocationAndSize();
+		addComponents();
+		addingItemListner();
+		addingActionListner();
+
+		setTitle("Booking Details");
+		setSize(940, 600);
+		add(icon);
+		setVisible(true);
+		setLocation(200, 50);
+		setResizable(false);
+	}
+
+	public void setLocationAndSize() {
+
+		//customer
+		Customerlabel.setBounds(50, 30, 100, 30);
+		Customerlabel.setForeground(Color.white);
+		Customerlabel.setFont(new Font("Serif", Font.BOLD, 18));
+
+		customerchoice.setBounds(150, 30, 300, 30);
+		customerchoice.setFont(new Font("Serif", Font.BOLD, 18));
+		// Tour Type
+
+		typeLabel.setBounds(50, 70, 100, 30);
+		typeLabel.setForeground(Color.white);
+		typeLabel.setFont(new Font("Serif", Font.BOLD, 18));
+
+		typeCombo.setBounds(150, 70, 300, 30);
+		typeCombo.setFont(new Font("Serif", Font.BOLD, 18));
+
+		// Package
+
+		packageLabel.setBounds(50, 110, 100, 30);
+		packageLabel.setForeground(Color.white);
+		packageLabel.setFont(new Font("Serif", Font.BOLD, 18));
+
+		packageCombo.setBounds(150, 110, 300, 30);
+		packageCombo.setFont(new Font("Serif", Font.BOLD, 18));
+
+		// Month
+
+		monthLabel.setBounds(50, 150, 100, 30);
+		monthLabel.setForeground(Color.white);
+		monthLabel.setFont(new Font("Serif", Font.BOLD, 18));
+
+		monthCombo.setBounds(150, 150, 300, 30);
+		monthCombo.setFont(new Font("Serif", Font.BOLD, 18));
+
+		// Operators
+
+		operators.setBounds(50, 190, 100, 30);
+		operators.setForeground(Color.white);
+		operators.setFont(new Font("Serif", Font.BOLD, 18));
+
+		operatosChoice.setBounds(150, 190, 300, 30);
+		operatosChoice.setFont(new Font("Serif", Font.BOLD, 18));
+
+		// Amount
+
+		amountLabel.setBounds(50, 230, 120, 30);
+		amountLabel.setForeground(Color.white);
+		amountLabel.setFont(new Font("Serif", Font.BOLD, 18));
+
+		amountTextField.setBounds(150, 230, 300, 30);
+		amountTextField.setFont(new Font("Serif", Font.BOLD, 18));
+
+		// Payment
+
+		paymethodLabel.setBounds(50, 270, 230, 30);
+		paymethodLabel.setForeground(Color.white);
+		paymethodLabel.setFont(new Font("Serif", Font.BOLD, 18));
+
+		paymethodTextField.setBounds(150, 270, 300, 30);
+		paymethodTextField.setFont(new Font("Serif", Font.BOLD, 18));
+
+		// Book
+
+		book.setBounds(150, 350, 90, 30);
+		book.setBackground(Color.white);
+		book.setForeground(Color.black);
+		book.setFocusable(false);
+
+		//New Customer
+		
+		newCustomer.setBounds(250, 350, 150, 30);
+		newCustomer.setBackground(Color.white);
+		newCustomer.setForeground(Color.black);
+		newCustomer.setFocusable(false);
+
+
+	}
+
+	public void addComponents() {
+		
+		add(Customerlabel);
+		add(customerchoice);
+		
+		add(typeLabel);
+		add(typeCombo);
+
+		add(packageLabel);
+		add(packageCombo);
+
+		add(monthLabel);
+		add(monthCombo);
+		
+		add(operators);
+		add(operatosChoice);
+
+		add(amountLabel);
+		add(amountTextField);
+
+		add(paymethodLabel);
+		add(paymethodTextField);
+
+		add(book);
+		add(newCustomer);
+	}
+
+	public void addingItemListner() {
+		packageCombo.addItemListener(new ItemListener() {
+
+			@Override
+			public void itemStateChanged(ItemEvent e) {
+
+				if (e.getStateChange() == ItemEvent.SELECTED)
+					load = "com.mysql.jdbc.Driver";
+				int i = packageCombo.getSelectedIndex();
+				String pack = packageCombo.getItem(i);
+
+				if (e.getItem() == pack) {
+					load = "com.mysql.jdbc.Driver";
+					url = "jdbc:mysql://localhost:3306/A_R_TRAVELS";
+					user = "root";
+					password = "";
+					try {
+						Class.forName(load);
+						conn = DriverManager.getConnection(url, user, password);
+						System.out.print("Done");
+						stm = conn.createStatement();
+						String qry = "Select Amount_RS from tbl_packages Where Package_ID = " + i + ";";
+						rs = stm.executeQuery(qry);
+						rs.next();
+
+						String dis = rs.getString(1);
+						amountTextField.setText(dis);
+						amountTextField.setEditable(false);
+
+					} catch (Exception ex) {
+						// TODO Auto-generated catch block
+						ex.printStackTrace();
+					}
+				}
+
+			}
+		});
+	}
+
+	public void addingActionListner() {
+	
+
+		book.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				
+				if (e.getSource() == book) {
+
+					load = "com.mysql.jdbc.Driver";
+					url = "jdbc:mysql://localhost:3306/A_R_TRAVELS";
+					user = "root";
+					password = "";
+					
+					int month , packages , operator ,packagetype,customer ;
+					month=monthCombo.getSelectedIndex()+1;
+					packages=packageCombo.getSelectedIndex();
+					packagetype = typeCombo.getSelectedIndex()+1;
+					operator=operatosChoice.getSelectedIndex()+1;
+					customer = customerchoice.getSelectedIndex()+1;
+					String amount , method,qry;
+//					qry="Select details_ID from tbl_details order by details_ID DESC limit 1;";
+					amount =  amountTextField.getText();
+					method = paymethodTextField.getText();
+					
+				
+					try {
+						Class.forName(load);
+						conn = DriverManager.getConnection(url, user, password);
+						stm = conn.createStatement();
+						System.out.println("connection created");
+						Sql="INSERT INTO tbl_booking(Custmers_ID, Month_ID ,Package_id ,TourType_Id, Operator_ID) values("
+								+"'"+customer+"',"
+								+"'"+month+"',"
+								+"'"+packages+"',"
+								+"'"+packagetype+"',"
+								+"'"+operator+"'"
+								+ ");";
+						rs=stm.executeQuery(Sql);
+						rs.next();
+						System.out.println("inserted");
+						
+					} catch (Exception exc) {
+						// TODO Auto-generated catch block
+						exc.printStackTrace();
+					}
+
+				}
+				new bookingSuccessful();
+			}
+		
+		});
+		newCustomer.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent arg0) {
+				// TODO Auto-generated method stub
+				new customerDetail();
+			}
+		});
+
+	}
+
+}

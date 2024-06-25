@@ -1,0 +1,60 @@
+package packages;
+import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+
+import javax.swing.*;
+
+import book.book;
+import book.customerDetail;
+
+public class norwayPackage extends JFrame implements ActionListener{
+	
+    ImageIcon norwayIc = new ImageIcon(ClassLoader.getSystemResource("packageTemplate/NorwayPackage.png"));
+    Image norwayImg = norwayIc.getImage().getScaledInstance(940, 600, Image.SCALE_DEFAULT);
+    ImageIcon norway = new ImageIcon(norwayImg);
+    JLabel norwayLbl = new JLabel(norway);
+    
+    JButton bookBtn = new JButton("BOOK NOW");
+	
+	  public norwayPackage() {
+	
+		setVisible(true);
+		setSize(940,600);
+		setLocation(200,50);
+		setResizable(false);
+		setTitle("Norway Package");
+		 
+		addComponents();
+		addActionListner();
+	}
+	  
+	  public void addComponents(){
+		  
+		    add(bookBtn);
+			bookBtn.setBounds(450,520,100,30);
+			bookBtn.setBackground(Color.white);
+			bookBtn.setForeground(Color.black);
+			bookBtn.setFocusable(false);
+			
+			add(norwayLbl);
+		  
+		  
+	  }
+	  
+	  public void addActionListner(){
+		  
+		  bookBtn.addActionListener(this);
+	  }
+
+	@Override
+	public void actionPerformed(ActionEvent e) {
+		
+		if(e.getSource() == bookBtn){
+			
+			new customerDetail();
+		}
+		
+	}
+
+}
